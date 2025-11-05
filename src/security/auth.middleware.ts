@@ -1,6 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
+import { env } from '../env.js';
 
-const USER_SERVICE_URL = process.env.USER_SERVICE_URL || 'http://localhost:4001';
+const USER_SERVICE_URL = env.USER_SERVICE_URL;
 
 export async function authenticateRequest(req: Request, res: Response, next: NextFunction) {
   const authHeader = req.headers.authorization || '';

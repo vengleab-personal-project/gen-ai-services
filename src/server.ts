@@ -1,4 +1,4 @@
-import 'dotenv/config';
+import { env } from './env.js';
 import express from 'express';
 import cors from 'cors';
 import { genaiRouter } from './routes/genai.routes.js';
@@ -10,7 +10,7 @@ app.use(express.json());
 app.get('/health', (_req, res) => res.json({ status: 'ok' }));
 app.use('/genai', genaiRouter);
 
-const port = Number(process.env.PORT || 4002);
+const port = env.PORT;
 app.listen(port, () => {
   // eslint-disable-next-line no-console
   console.log(`[genai-service] listening on : http://localhost:${port}`);

@@ -1,4 +1,5 @@
 import { GoogleGenAI, Type } from '@google/genai';
+import { env } from '../env.js';
 
 export enum FieldType {
   TEXT = 'text',
@@ -40,7 +41,7 @@ const questionGenerationSchema = {
 
 export async function generateQuestionsHandler(params: { topic: string; count: number }) {
   const { topic, count } = params;
-  const apiKey = (process.env.GEMINI_API_KEY || '').trim();
+  const apiKey = env.GEMINI_API_KEY;
   if (!apiKey) {
     throw new Error('Server API key not configured');
   }
@@ -53,7 +54,7 @@ export async function generateQuestionsHandler(params: { topic: string; count: n
       responseSchema: questionGenerationSchema
     }
   });
-  const jsonText = response.text.trim();
+  const jsonText = response.text?.trim() ?? '';
   if (!jsonText) {
     throw new Error('Empty response from model');
   }
