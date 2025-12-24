@@ -1,12 +1,7 @@
-import express, { type Request, type Response } from 'express';
-import cors from 'cors';
-import { genaiRouter } from './routes/genai.routes.js';
+import { env } from "./env.js";
+import app from "./index.js";
 
-const app = express();
-app.use(cors());
-app.use(express.json());
-
-app.get('/health', (_req: Request, res: Response) => res.json({ status: 'ok' }));
-app.use('/genai', genaiRouter);
-
-export default app;
+const port = env.PORT;
+app.listen(port, () => {
+  console.log(`[genai-service] listening on : http://localhost:${port}`);
+});
