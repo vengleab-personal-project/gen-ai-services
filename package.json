@@ -2,10 +2,10 @@
   "name": "genai-service",
   "version": "0.1.0",
   "private": true,
-  "type": "module",
+  "type": "commonjs",
   "scripts": {
-    "dev": "tsx src/server.ts",
-    "build": "tsc -p tsconfig.json",
+    "dev": "npm run build --  --watch && vercel dev --listen 4001",
+    "build": "npx tsc --noEmit false",
     "start": "node dist/server.js"
   },
   "dependencies": {

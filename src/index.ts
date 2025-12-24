@@ -1,8 +1,8 @@
-import express, { type Request, type Response } from 'express';
+import express, { type Express, type Request, type Response } from 'express';
 import cors from 'cors';
 import { genaiRouter } from './routes/genai.routes.js';
 
-const app = express();
+const app: Express = express();
 app.use(cors());
 app.use(express.json());
 

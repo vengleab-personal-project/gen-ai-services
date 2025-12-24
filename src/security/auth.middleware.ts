@@ -25,7 +25,7 @@ export async function authenticateRequest(req: Request, res: Response, next: Nex
     console.log({ payload });
     
     (req as any).user = (payload as { user?: unknown })?.user || null;
-    next();
+    return next();
   } catch (err) {
     console.error('Auth verification failed', err);
     return res.status(401).json({ error: 'Auth verification failed' });

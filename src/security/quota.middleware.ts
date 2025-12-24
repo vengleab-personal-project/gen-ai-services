@@ -58,7 +58,7 @@ export async function checkAIQuestionQuota(req: Request, res: Response, next: Ne
     // Attach quota info to request for downstream use
     (req as any).quotaInfo = quotaData;
     
-    next();
+    return next();
   } catch (err) {
     console.error('Quota check failed', err);
     return res.status(500).json({ 

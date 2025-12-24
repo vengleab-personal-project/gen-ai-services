@@ -1,10 +1,10 @@
 import { Router } from 'express';
-import type { Request, Response } from 'express';
+import type { Request, Response, Router as ExpressRouter } from 'express';
 import { authenticateRequest } from '../security/auth.middleware.js';
 import { checkAIQuestionQuota } from '../security/quota.middleware.js';
 import { generateQuestionsHandler } from '../services/genai.service.js';
 
-export const genaiRouter = Router();
+export const genaiRouter: ExpressRouter = Router();
 
 genaiRouter.post(
   '/generate-questions',
@@ -18,9 +18,9 @@ genaiRouter.post(
     const safeCount = Math.max(1, Math.min(100, Number(count || 10)));
     try {
       const fields = await generateQuestionsHandler({ topic, count: safeCount });
-      res.json(fields);
+      return res.json(fields);
     } catch (err: any) {
-      res.status(500).json({ error: err?.message || 'Generation failed' });
+      return res.status(500).json({ error: err?.message || 'Generation failed' });
     }
   }
 );
