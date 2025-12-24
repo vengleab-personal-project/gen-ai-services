@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { authenticateRequest } from '../security/auth.middleware.js';
+import { checkAIQuestionQuota } from '../security/quota.middleware.js';
 import { generateQuestionsHandler } from '../services/genai.service.js';
 
 export const genaiRouter = Router();
@@ -7,6 +8,7 @@ export const genaiRouter = Router();
 genaiRouter.post(
   '/generate-questions',
   authenticateRequest,
+  checkAIQuestionQuota, // Check quota with user-service
   async (req, res) => {
     const { topic, count } = req.body ?? {};
     if (!topic || typeof topic !== 'string') {
