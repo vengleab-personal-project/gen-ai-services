@@ -35,13 +35,13 @@ export async function checkAIQuestionQuota(req: Request, res: Response, next: Ne
     });
 
     if (!quotaResponse.ok) {
-      const errorData = await quotaResponse.json().catch(() => ({}));
+      const errorData = (await quotaResponse.json().catch(() => ({}))) as Record<string, unknown>;
       
       if (quotaResponse.status === 429) {
         return res.status(429).json({
           error: 'Quota exceeded',
-          message: errorData.message || 'You have exhausted your AI question generation quota',
-          remaining: errorData.remaining || 0,
+          message: (errorData.message as string) || 'You have exhausted your AI question generation quota',
+          remaining: (errorData.remaining as number) || 0,
           planType: errorData.planType,
           upgrade: errorData.upgrade,
         });
@@ -49,11 +49,11 @@ export async function checkAIQuestionQuota(req: Request, res: Response, next: Ne
       
       return res.status(quotaResponse.status).json({
         error: 'Quota check failed',
-        message: errorData.message || 'Failed to verify quota',
+        message: (errorData.message as string) || 'Failed to verify quota',
       });
     }
 
-    const quotaData = await quotaResponse.json();
+    const quotaData = (await quotaResponse.json()) as unknown;
     
     // Attach quota info to request for downstream use
     (req as any).quotaInfo = quotaData;

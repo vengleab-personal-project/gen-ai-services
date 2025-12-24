@@ -20,11 +20,11 @@ export async function authenticateRequest(req: Request, res: Response, next: Nex
     if (!verifyResponse.ok) {
       return res.status(401).json({ error: 'Invalid token' });
     }
-    const payload = await verifyResponse.json().catch(() => ({}));
+    const payload = (await verifyResponse.json().catch(() => ({}))) as { user?: unknown };
     // Attach identity for downstream use if needed
     console.log({ payload });
     
-    (req as any).user = payload?.user || null;
+    (req as any).user = (payload as { user?: unknown })?.user || null;
     next();
   } catch (err) {
     console.error('Auth verification failed', err);
